@@ -11,6 +11,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.BeanUtils;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -57,6 +59,7 @@ public class SuperheroServiceTest {
         verify(superheroRepository, times(1)).findById(superheroId);
 
     }
+
     @Test
     public void getSuperheroesByNameTest(){
         String name = "super";
@@ -67,6 +70,30 @@ public class SuperheroServiceTest {
 
         verify(superheroRepository, times(1)).findByNameContainingIgnoreCase(name);
         assertNotNull(superheroDTOList);
+
+    }
+
+    @Test
+    public void createSuperheroTest(){
+        Superhero superhero = new Superhero();
+        SuperheroDTO superheroDTO = SuperheroDTO.builder()
+                .name("Superman")
+                .age(35)
+                .gender("male")
+                .birthPlace("Smallville")
+                .power("Fly")
+                .operationBase("Metropolis")
+                .build();
+
+        BeanUtils.copyProperties(superheroDTO, superhero);
+
+        when(superheroMapper.superheroDTOToSuperhero(Mockito.any(SuperheroDTO.class))).thenReturn(superhero);
+        when(superheroRepository.save(Mockito.any(Superhero.class))).thenReturn(superhero);
+        when(superheroMapper.superheroToSuperheroeDTO(Mockito.any(Superhero.class))).thenReturn(superheroDTO);
+
+        SuperheroDTO savedSuperhero = superheroService.createSuperhero(superheroDTO);
+
+        assertNotNull(savedSuperhero);
 
     }
 

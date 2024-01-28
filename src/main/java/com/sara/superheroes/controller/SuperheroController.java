@@ -34,5 +34,11 @@ public class SuperheroController {
         return new ResponseEntity<>(superhero, HttpStatus.OK);
     }
 
+    @PostMapping("/superheroes")
+    public ResponseEntity<SuperheroDTO> createSuperheroe(@RequestBody SuperheroDTO superhero){
+        SuperheroDTO createdSuperhero = superheroService.createSuperhero(superhero);
+        return new ResponseEntity<>(createdSuperhero, HttpStatus.CREATED);
+    }
+
 
 }

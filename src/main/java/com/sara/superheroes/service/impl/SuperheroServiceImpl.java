@@ -39,4 +39,10 @@ public class SuperheroServiceImpl implements SuperheroService {
     public List<SuperheroDTO> getSuperheroesByName(String name) {
         return superheroMapper.superheroToSuperheroeDTO(superheroRepository.findByNameContainingIgnoreCase(name));
     }
+
+    @Override
+    public SuperheroDTO createSuperhero(SuperheroDTO superhero) {
+        Superhero savedSuperhero = superheroRepository.save(superheroMapper.superheroDTOToSuperhero(superhero));
+        return superheroMapper.superheroToSuperheroeDTO(savedSuperhero);
+    }
 }

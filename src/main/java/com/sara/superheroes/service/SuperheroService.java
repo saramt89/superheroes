@@ -10,4 +10,6 @@ public interface SuperheroService {
     SuperheroDTO getSuperhero(int id);
 
     List<SuperheroDTO> getSuperheroesByName(String name);
+
+    SuperheroDTO createSuperhero(SuperheroDTO superhero);
 }
