@@ -3,7 +3,6 @@ package com.sara.superheroes.controller;
 import com.sara.superheroes.service.SuperheroService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -30,8 +29,16 @@ public class SuperheroControllerTest {
     }
 
     @Test
-    void getAllSuperheroById() throws Exception {
+    void getAllSuperheroByIdTest() throws Exception {
         mockMvc.perform(get("/api/superheroes/{id}", 1))
+                .andExpect(status().is2xxSuccessful());
+
+    }
+
+    @Test
+    void getAllSuperheroByNameTest() throws Exception {
+        mockMvc.perform(get("/api/superheroes")
+                        .param("name", "superman"))
                 .andExpect(status().is2xxSuccessful());
 
     }
