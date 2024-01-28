@@ -33,7 +33,7 @@ public class SuperheroServiceTest {
     @Test
     public void getAllSuperheroes(){
 
-        List<Superhero> superheroList = Mockito.mock(List.class);
+        List<Superhero> superheroList = mock(List.class);
         when(superheroRepository.findAll()).thenReturn(superheroList);
 
         List<SuperheroDTO> superheroDTOList = superheroService.getAllSuperheroes();
@@ -46,8 +46,8 @@ public class SuperheroServiceTest {
     @Test
     public void getSuperheroById(){
         int superheroId = 1;
-        Superhero mockSuperhero = Mockito.mock(Superhero.class);
-        SuperheroDTO mockSuperheroDTO = Mockito.mock(SuperheroDTO.class);
+        Superhero mockSuperhero = mock(Superhero.class);
+        SuperheroDTO mockSuperheroDTO = mock(SuperheroDTO.class);
         when(superheroRepository.findById(superheroId)).thenReturn(Optional.of(mockSuperhero));
         when(superheroMapper.superheroToSuperheroeDTO(mockSuperhero)).thenReturn(mockSuperheroDTO);
 
@@ -59,13 +59,13 @@ public class SuperheroServiceTest {
     }
     @Test
     public void getSuperheroesByNameTest(){
+        String name = "super";
+        List<Superhero> superheroList = mock(List.class);
+        when(superheroRepository.findByNameContainingIgnoreCase(name)).thenReturn(superheroList);
 
-        List<Superhero> superheroList = Mockito.mock(List.class);
-        when(superheroRepository.findAll()).thenReturn(superheroList);
+        List<SuperheroDTO> superheroDTOList = superheroService.getSuperheroesByName(name);
 
-        List<SuperheroDTO> superheroDTOList = superheroService.getAllSuperheroes();
-
-        verify(superheroRepository, times(1)).findAll();
+        verify(superheroRepository, times(1)).findByNameContainingIgnoreCase(name);
         assertNotNull(superheroDTOList);
 
     }
