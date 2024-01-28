@@ -13,6 +13,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class SuperheroDTO implements Serializable {
 
+    private int id;
     private String name;
     private String power;
     private String gender;

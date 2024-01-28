@@ -17,7 +17,7 @@ public class SuperheroController {
     private SuperheroService superheroService;
 
     @GetMapping("/superheroes")
-    public ResponseEntity<List<SuperheroDTO>> getAllSuperheroes(@PathVariable(value = "name", required= false) String name){
+    public ResponseEntity<List<SuperheroDTO>> getAllSuperheroes(@RequestParam(value = "name", required = false) String name){
         List<SuperheroDTO> superheroList;
         if(name != null && !name.isEmpty()){
             superheroList = superheroService.getSuperheroesByName(name);

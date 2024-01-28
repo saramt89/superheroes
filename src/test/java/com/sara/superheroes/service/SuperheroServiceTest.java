@@ -77,6 +77,7 @@ public class SuperheroServiceTest {
     public void createSuperheroTest(){
         Superhero superhero = new Superhero();
         SuperheroDTO superheroDTO = SuperheroDTO.builder()
+                .id(1)
                 .name("Superman")
                 .age(35)
                 .gender("male")
