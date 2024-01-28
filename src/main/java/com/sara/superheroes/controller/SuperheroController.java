@@ -27,6 +27,7 @@ public class SuperheroController {
 
     @GetMapping("/superheroes/{id}")
     public ResponseEntity<SuperheroDTO> getSuperheroe(@PathVariable(value = "id") int id){
-        return null;
+        SuperheroDTO superhero = superheroService.getSuperhero(id);
+        return new ResponseEntity<>(superhero, HttpStatus.OK);
     }
 }

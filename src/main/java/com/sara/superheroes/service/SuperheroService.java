@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface SuperheroService {
     List<SuperheroDTO> getAllSuperheroes();
+
+    SuperheroDTO getSuperhero(int id);
 }

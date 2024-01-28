@@ -5,16 +5,16 @@ import com.sara.superheroes.mapper.SuperheroMapper;
 import com.sara.superheroes.model.Superhero;
 import com.sara.superheroes.respository.SuperheroRepository;
 import com.sara.superheroes.service.impl.SuperheroServiceImpl;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.util.List;
+import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 
@@ -39,7 +39,22 @@ public class SuperheroServiceTest {
         List<SuperheroDTO> superheroDTOList = superheroService.getAllSuperheroes();
 
         verify(superheroRepository, times(1)).findAll();
-        Assertions.assertThat(superheroDTOList).isNotNull();
+        assertNotNull(superheroDTOList);
+
+    }
+
+    @Test
+    public void getSuperheroById(){
+        int superheroId = 1;
+        Superhero mockSuperhero = Mockito.mock(Superhero.class);
+        SuperheroDTO mockSuperheroDTO = Mockito.mock(SuperheroDTO.class);
+        when(superheroRepository.findById(superheroId)).thenReturn(Optional.of(mockSuperhero));
+        when(superheroMapper.superheroToSuperheroeDTO(mockSuperhero)).thenReturn(mockSuperheroDTO);
+
+        SuperheroDTO superhero = superheroService.getSuperhero(superheroId);
+
+        assertNotNull(superhero);
+        verify(superheroRepository, times(1)).findById(superheroId);
 
     }
 
