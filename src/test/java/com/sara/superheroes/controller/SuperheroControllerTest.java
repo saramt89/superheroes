@@ -29,4 +29,11 @@ public class SuperheroControllerTest {
 
     }
 
+    @Test
+    void getAllSuperheroById() throws Exception {
+        mockMvc.perform(get("/api/superheroes/{id}", 1))
+                .andExpect(status().is2xxSuccessful());
+
+    }
+
 }
