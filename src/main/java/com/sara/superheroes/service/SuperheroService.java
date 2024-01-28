@@ -8,4 +8,6 @@ public interface SuperheroService {
     List<SuperheroDTO> getAllSuperheroes();
 
     SuperheroDTO getSuperhero(int id);
+
+    List<SuperheroDTO> getSuperheroesByName(String name);
 }

@@ -17,8 +17,14 @@ public class SuperheroController {
     private SuperheroService superheroService;
 
     @GetMapping("/superheroes")
-    public ResponseEntity<List<SuperheroDTO>> getAllSuperheroes(){
-        List<SuperheroDTO> superheroList = superheroService.getAllSuperheroes();
+    public ResponseEntity<List<SuperheroDTO>> getAllSuperheroes(@PathVariable(value = "name", required= false) String name){
+        List<SuperheroDTO> superheroList;
+        if(name != null && !name.isEmpty()){
+            superheroList = superheroService.getSuperheroesByName(name);
+        }else{
+            superheroList = superheroService.getAllSuperheroes();
+        }
+
         return new ResponseEntity<>(superheroList, HttpStatus.OK);
     }
 
@@ -27,5 +33,6 @@ public class SuperheroController {
         SuperheroDTO superhero = superheroService.getSuperhero(id);
         return new ResponseEntity<>(superhero, HttpStatus.OK);
     }
+
 
 }

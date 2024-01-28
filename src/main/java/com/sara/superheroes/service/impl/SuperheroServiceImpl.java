@@ -34,4 +34,9 @@ public class SuperheroServiceImpl implements SuperheroService {
         }
         return superheroDTO;
     }
+
+    @Override
+    public List<SuperheroDTO> getSuperheroesByName(String name) {
+        return null;
+    }
 }

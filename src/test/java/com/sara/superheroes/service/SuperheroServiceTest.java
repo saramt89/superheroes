@@ -57,6 +57,19 @@ public class SuperheroServiceTest {
         verify(superheroRepository, times(1)).findById(superheroId);
 
     }
+    @Test
+    public void getSuperheroesByNameTest(){
+
+        List<Superhero> superheroList = Mockito.mock(List.class);
+        when(superheroRepository.findAll()).thenReturn(superheroList);
+
+        List<SuperheroDTO> superheroDTOList = superheroService.getAllSuperheroes();
+
+        verify(superheroRepository, times(1)).findAll();
+        assertNotNull(superheroDTOList);
+
+    }
+
 
 
 }
