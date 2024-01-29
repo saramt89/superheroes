@@ -1,6 +1,8 @@
 package com.sara.superheroes.service.impl;
 
 import com.sara.superheroes.dto.SuperheroDTO;
+import com.sara.superheroes.exceptions.SuperheroExistsException;
+import com.sara.superheroes.exceptions.SuperheroNotFoundException;
 import com.sara.superheroes.mapper.SuperheroMapper;
 import com.sara.superheroes.model.Superhero;
 import com.sara.superheroes.respository.SuperheroRepository;
@@ -42,7 +44,26 @@ public class SuperheroServiceImpl implements SuperheroService {
 
     @Override
     public SuperheroDTO createSuperhero(SuperheroDTO superhero) {
+        if(getSuperhero(superhero.getId()) != null){
+            throw new SuperheroExistsException("The superhero with id:" +superhero.getId()+" already exists");
+        }
         Superhero savedSuperhero = superheroRepository.save(superheroMapper.superheroDTOToSuperhero(superhero));
         return superheroMapper.superheroToSuperheroeDTO(savedSuperhero);
+    }
+
+    @Override
+    public SuperheroDTO updateSuperhero(SuperheroDTO superhero) {
+        Superhero savedSuperhero = superheroRepository.save(superheroMapper.superheroDTOToSuperhero(superhero));
+        return superheroMapper.superheroToSuperheroeDTO(savedSuperhero);
+    }
+
+    @Override
+    public SuperheroDTO deleteSuperhero(int id) {
+        SuperheroDTO superhero = getSuperhero(id);
+        if(superhero == null){
+            throw new SuperheroNotFoundException("The superhero with id:" + id + " doesn't exist");
+        }
+        superheroRepository.deleteById(id);
+        return superhero;
     }
 }

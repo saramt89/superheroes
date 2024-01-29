@@ -1,6 +1,7 @@
 package com.sara.superheroes.service;
 
 import com.sara.superheroes.dto.SuperheroDTO;
+import com.sara.superheroes.exceptions.SuperheroExistsException;
 import com.sara.superheroes.mapper.SuperheroMapper;
 import com.sara.superheroes.model.Superhero;
 import com.sara.superheroes.respository.SuperheroRepository;
@@ -16,7 +17,7 @@ import org.springframework.beans.BeanUtils;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 
@@ -95,9 +96,57 @@ public class SuperheroServiceTest {
         SuperheroDTO savedSuperhero = superheroService.createSuperhero(superheroDTO);
 
         assertNotNull(savedSuperhero);
+        verify(superheroRepository, times(1)).save(superhero);
 
     }
 
+    @Test
+    public void createSuperheroAlreadyExistsTest(){
+        SuperheroDTO mockSuperheroDTO = mock(SuperheroDTO.class);
 
+        when(superheroService.createSuperhero(mockSuperheroDTO)).thenThrow(SuperheroExistsException.class);
+        assertThrows(SuperheroExistsException.class, () -> superheroService.createSuperhero(mockSuperheroDTO));
+    }
+
+    @Test
+    public void updateSuperheroTest(){
+        Superhero superhero = new Superhero();
+        SuperheroDTO superheroToUpdate = SuperheroDTO.builder()
+                .id(1)
+                .name("Superman")
+                .age(35)
+                .gender("male")
+                .birthPlace("Smallville")
+                .power("Fly")
+                .operationBase("Metropolis")
+                .build();
+
+        BeanUtils.copyProperties(superheroToUpdate, superhero);
+
+        when(superheroMapper.superheroDTOToSuperhero(Mockito.any(SuperheroDTO.class))).thenReturn(superhero);
+        when(superheroRepository.save(superhero)).thenReturn(superhero);
+        when(superheroMapper.superheroToSuperheroeDTO(Mockito.any(Superhero.class))).thenReturn(superheroToUpdate);
+
+        SuperheroDTO updatedSuperhero = superheroService.updateSuperhero(superheroToUpdate);
+
+        assertNotNull(updatedSuperhero);
+        verify(superheroRepository, times(1)).save(superhero);
+
+    }
+
+    @Test
+    public void deleteSuperheroById(){
+        int superheroId = 1;
+        Superhero mockSuperhero = mock(Superhero.class);
+        SuperheroDTO mockSuperheroDTO = mock(SuperheroDTO.class);
+        when(superheroRepository.findById(superheroId)).thenReturn(Optional.of(mockSuperhero));
+        when(superheroMapper.superheroToSuperheroeDTO(mockSuperhero)).thenReturn(mockSuperheroDTO);
+
+        SuperheroDTO superhero = superheroService.deleteSuperhero(superheroId);
+
+        assertNotNull(superhero);
+        verify(superheroRepository, times(1)).deleteById(superheroId);
+
+    }
 
 }
