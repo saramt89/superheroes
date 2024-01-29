@@ -1,6 +1,7 @@
 package com.sara.superheroes.service;
 
 import com.sara.superheroes.dto.SuperheroDTO;
+import com.sara.superheroes.exceptions.SuperheroExistsException;
 import com.sara.superheroes.mapper.SuperheroMapper;
 import com.sara.superheroes.model.Superhero;
 import com.sara.superheroes.respository.SuperheroRepository;
@@ -17,7 +18,7 @@ import org.springframework.beans.BeanUtils;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 
@@ -100,6 +101,25 @@ public class SuperheroServiceTest {
     }
 
     @Test
+    public void createSuperheroAlreadyExistsTest(){
+        Superhero superhero = new Superhero();
+        SuperheroDTO superheroDTO = SuperheroDTO.builder()
+                .id(1)
+                .name("Superman")
+                .age(35)
+                .gender("male")
+                .birthPlace("Smallville")
+                .power("Fly")
+                .operationBase("Metropolis")
+                .build();
+
+        BeanUtils.copyProperties(superheroDTO, superhero);
+
+        when(superheroService.createSuperhero(superheroDTO)).thenThrow(SuperheroExistsException.class);
+        assertThrows(SuperheroExistsException.class, () -> superheroService.createSuperhero(superheroDTO));
+    }
+
+    @Test
     public void updateSuperheroTest(){
         Superhero superhero = new Superhero();
         SuperheroDTO superheroToUpdate = SuperheroDTO.builder()
@@ -123,7 +143,6 @@ public class SuperheroServiceTest {
         assertNotNull(updatedSuperhero);
 
     }
-
 
 
 }
