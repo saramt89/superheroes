@@ -40,5 +40,10 @@ public class SuperheroController {
         return new ResponseEntity<>(createdSuperhero, HttpStatus.CREATED);
     }
 
+    @PutMapping("/superheroes")
+    public ResponseEntity<SuperheroDTO> updateSuperheroe(@RequestBody SuperheroDTO superhero){
+        return null;
+    }
+
 
 }
