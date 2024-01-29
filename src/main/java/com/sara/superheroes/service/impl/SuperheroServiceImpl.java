@@ -9,7 +9,6 @@ import com.sara.superheroes.respository.SuperheroRepository;
 import com.sara.superheroes.service.SuperheroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,8 +33,6 @@ public class SuperheroServiceImpl implements SuperheroService {
         Optional<Superhero> superhero = superheroRepository.findById(id);
         if(superhero.isPresent()){
             superheroDTO = superheroMapper.superheroToSuperheroeDTO(superhero.get());
-        }else{
-            throw new SuperheroNotFoundException("The superhero with id:" + id + " doesn't exist");
         }
         return superheroDTO;
     }
@@ -62,11 +59,11 @@ public class SuperheroServiceImpl implements SuperheroService {
 
     @Override
     public SuperheroDTO deleteSuperhero(int id) {
-        SuperheroDTO deletedSuperhero = getSuperhero(id);
-        if(getSuperhero(id) == null){
+        SuperheroDTO superhero = getSuperhero(id);
+        if(superhero == null){
             throw new SuperheroNotFoundException("The superhero with id:" + id + " doesn't exist");
         }
         superheroRepository.deleteById(id);
-        return deletedSuperhero;
+        return superhero;
     }
 }
