@@ -63,7 +63,12 @@ public class SuperheroControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(SuperheroDTO.builder().build())))
                 .andExpect(status().is2xxSuccessful());
+    }
 
+    @Test
+    void deleteSuperhero() throws Exception {
+        mockMvc.perform(delete("/api/superheroes/{id}", 1))
+                .andExpect(status().is2xxSuccessful());
     }
 
 }
