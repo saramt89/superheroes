@@ -14,4 +14,6 @@ public interface SuperheroService {
     SuperheroDTO createSuperhero(SuperheroDTO superhero);
 
     SuperheroDTO updateSuperhero(SuperheroDTO superhero);
+
+    SuperheroDTO deleteSuperhero(int id);
 }

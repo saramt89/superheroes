@@ -46,5 +46,12 @@ public class SuperheroController {
         return new ResponseEntity<>(updatedSuperhero, HttpStatus.OK);
     }
 
+    @DeleteMapping("/superheroes/{id}")
+    public ResponseEntity<SuperheroDTO> deleteSuperheroe(@PathVariable(value = "id") int id){
+        SuperheroDTO superhero = superheroService.deleteSuperhero(id);
+        return new ResponseEntity<>(superhero, HttpStatus.OK);
+    }
+
+
 
 }
