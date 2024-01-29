@@ -5,6 +5,7 @@ import com.sara.superheroes.mapper.SuperheroMapper;
 import com.sara.superheroes.model.Superhero;
 import com.sara.superheroes.respository.SuperheroRepository;
 import com.sara.superheroes.service.impl.SuperheroServiceImpl;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -95,6 +96,31 @@ public class SuperheroServiceTest {
         SuperheroDTO savedSuperhero = superheroService.createSuperhero(superheroDTO);
 
         assertNotNull(savedSuperhero);
+
+    }
+
+    @Test
+    public void updateSuperheroTest(){
+        Superhero superhero = new Superhero();
+        SuperheroDTO superheroToUpdate = SuperheroDTO.builder()
+                .id(1)
+                .name("Superman")
+                .age(35)
+                .gender("male")
+                .birthPlace("Smallville")
+                .power("Fly")
+                .operationBase("Metropolis")
+                .build();
+
+        BeanUtils.copyProperties(superheroToUpdate, superhero);
+
+        when(superheroMapper.superheroDTOToSuperhero(Mockito.any(SuperheroDTO.class))).thenReturn(superhero);
+        when(superheroRepository.save(superhero)).thenReturn(superhero);
+        when(superheroMapper.superheroToSuperheroeDTO(Mockito.any(Superhero.class))).thenReturn(superheroToUpdate);
+
+        SuperheroDTO updatedSuperhero = superheroService.updateSuperhero(superheroToUpdate);
+
+        assertNotNull(updatedSuperhero);
 
     }
 
